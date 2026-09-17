@@ -1,0 +1,66 @@
+{
+  "_comment": "Recorded-shape Tavily /search responses for offline review. These are SYNTHETIC fixtures written for this repo, not captured live browsing, and every page they resolve to is titled with a [FIXTURE] prefix so it can never be mistaken for real research.",
+
+  "busy gym-goers protein supplement habits convenience": {
+    "results": [
+      {
+        "title": "Why gym-goers abandon post-workout nutrition routines",
+        "url": "https://example-research.org/reports/post-workout-routines",
+        "snippet": "Survey of 1,200 regular gym attendees on what happens in the 30 minutes after a session ends.",
+        "score": 0.93
+      },
+      {
+        "title": "Portability and repeat purchase in sports nutrition",
+        "url": "https://example-journal.test/articles/portability-repeat-purchase",
+        "snippet": "Analysis of how packaging format affects whether supplement buyers re-order.",
+        "score": 0.88
+      },
+      {
+        "title": "Training consistency: what regular lifters actually credit",
+        "url": "https://example-fitness-review.test/consistency-study",
+        "snippet": "Interviews with long-term trainees about habit formation versus training intensity.",
+        "score": 0.81
+      }
+    ]
+  },
+
+  "gym goers post workout nutrition timing routine study": {
+    "results": [
+      {
+        "title": "Training consistency: what regular lifters actually credit",
+        "url": "https://example-fitness-review.test/consistency-study",
+        "snippet": "Interviews with long-term trainees about habit formation versus training intensity.",
+        "score": 0.9
+      },
+      {
+        "title": "Meal timing around resistance training: a practical overview",
+        "url": "https://example-research.org/reports/meal-timing-overview",
+        "snippet": "Overview of how timing guidance is interpreted by non-athlete gym users.",
+        "score": 0.77
+      }
+    ]
+  },
+
+  "__default__": {
+    "results": [
+      {
+        "title": "Why gym-goers abandon post-workout nutrition routines",
+        "url": "https://example-research.org/reports/post-workout-routines",
+        "snippet": "Survey of 1,200 regular gym attendees on post-session behaviour.",
+        "score": 0.9
+      },
+      {
+        "title": "Portability and repeat purchase in sports nutrition",
+        "url": "https://example-journal.test/articles/portability-repeat-purchase",
+        "snippet": "How packaging format affects re-ordering.",
+        "score": 0.85
+      },
+      {
+        "title": "Training consistency: what regular lifters actually credit",
+        "url": "https://example-fitness-review.test/consistency-study",
+        "snippet": "Habit formation versus training intensity.",
+        "score": 0.8
+      }
+    ]
+  }
+}
