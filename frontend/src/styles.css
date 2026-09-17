@@ -1,0 +1,704 @@
+/* ==========================================================================
+   Design tokens
+   ========================================================================== */
+:root {
+  /* Surfaces: a cool near-black that lets the warm accent sing. */
+  --bg: #08090c;
+  --bg-elev: #0d0f14;
+  --surface: #12151c;
+  --surface-2: #181c25;
+  --surface-3: #1f2530;
+  --border: #232935;
+  --border-bright: #313949;
+
+  --text: #eef1f6;
+  --text-dim: #9aa5b6;
+  --text-faint: #68727f;
+
+  /* Warm accent, echoing the campaign palette the app itself generates. */
+  --accent: #ff6b35;
+  --accent-soft: #ff8c5f;
+  --accent-deep: #d94a18;
+  --violet: #8b7cf6;
+  --cyan: #3ddbd9;
+
+  --ok: #3ecf8e;
+  --warn: #f5a524;
+  --err: #f4506a;
+
+  --radius: 14px;
+  --radius-sm: 9px;
+  --radius-lg: 20px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 24px 60px -18px rgba(0, 0, 0, 0.75);
+
+  --font: "Segoe UI Variable Display", "Segoe UI", Inter, -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif;
+  --mono: "Cascadia Code", "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Ambient light: two soft pools of colour fixed behind everything, so the page
+   has depth without any element having to carry a heavy background image. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 40rem at 12% -8%, rgba(255, 107, 53, 0.09), transparent 60%),
+    radial-gradient(52rem 36rem at 92% 4%, rgba(139, 124, 246, 0.08), transparent 62%),
+    radial-gradient(40rem 30rem at 50% 108%, rgba(61, 219, 217, 0.05), transparent 65%);
+}
+
+::selection { background: rgba(255, 107, 53, 0.3); }
+
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border-bright);
+  border-radius: 99px;
+  border: 3px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: #3f4757; }
+
+/* ==========================================================================
+   Layout
+   ========================================================================== */
+.app { max-width: 1240px; margin: 0 auto; padding: 0 28px 100px; }
+
+header.top {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 22px 0 18px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(8, 9, 12, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+}
+
+header.top h1 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  background: linear-gradient(94deg, #fff 10%, var(--accent-soft) 70%, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  white-space: nowrap;
+}
+
+header.top nav { display: flex; gap: 4px; margin-left: auto; }
+header.top nav a {
+  padding: 7px 15px;
+  border-radius: 999px;
+  color: var(--text-dim);
+  font-size: 13.5px;
+  font-weight: 550;
+  transition: color 0.18s var(--ease), background 0.18s var(--ease);
+}
+header.top nav a:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
+header.top nav a.active {
+  color: var(--text);
+  background: linear-gradient(180deg, var(--surface-3), var(--surface-2));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+.card {
+  position: relative;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-elev) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+  animation: rise 0.45s var(--ease) both;
+}
+
+/* A one-pixel highlight along the top edge reads as a light source above. */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.11) 50%, transparent);
+}
+
+.card h2 {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.card h3 { margin: 0 0 10px; font-size: 14px; font-weight: 600; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.section-title {
+  margin: 36px 0 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+.muted { color: var(--text-dim); font-size: 13.5px; }
+.mono { font-family: var(--mono); font-size: 12px; }
+
+/* ==========================================================================
+   Badges
+   ========================================================================== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 11px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border-bright);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.badge.ok { border-color: rgba(62, 207, 142, 0.4); color: var(--ok); background: rgba(62, 207, 142, 0.1); }
+.badge.err { border-color: rgba(244, 80, 106, 0.4); color: var(--err); background: rgba(244, 80, 106, 0.1); }
+.badge.warn { border-color: rgba(245, 165, 36, 0.4); color: var(--warn); background: rgba(245, 165, 36, 0.1); }
+.badge.live { border-color: rgba(62, 207, 142, 0.45); color: var(--ok); background: rgba(62, 207, 142, 0.1); }
+.badge.fixture { border-color: rgba(245, 165, 36, 0.45); color: var(--warn); background: rgba(245, 165, 36, 0.1); }
+
+/* Pulsing dot for a genuinely live connection. */
+.badge.live::before,
+.badge.fixture::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 0 currentColor;
+  animation: ping 2s var(--ease) infinite;
+}
+@keyframes ping {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5); }
+  70% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+label {
+  display: block;
+  margin: 18px 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 11px 13px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+}
+input:hover, textarea:hover, select:hover { border-color: var(--border-bright); }
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+}
+textarea { resize: vertical; min-height: 78px; line-height: 1.6; }
+input[type="file"] { padding: 9px; cursor: pointer; }
+input[type="file"]::file-selector-button {
+  margin-right: 12px;
+  padding: 6px 13px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--surface-3);
+  border: 1px solid var(--border-bright);
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+button {
+  padding: 10px 18px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--text);
+  background: var(--surface-2);
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform 0.14s var(--ease), background 0.16s var(--ease),
+    border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+}
+button:hover:not(:disabled) {
+  background: var(--surface-3);
+  border-color: #3e475a;
+  transform: translateY(-1px);
+}
+button:active:not(:disabled) { transform: translateY(0); }
+button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+button.primary {
+  color: #180a04;
+  font-weight: 650;
+  background: linear-gradient(135deg, var(--accent-soft), var(--accent) 55%, var(--accent-deep));
+  border-color: transparent;
+  box-shadow: 0 6px 20px -6px rgba(255, 107, 53, 0.55);
+}
+button.primary:hover:not(:disabled) {
+  box-shadow: 0 10px 28px -6px rgba(255, 107, 53, 0.7);
+  filter: brightness(1.06);
+}
+button.small { padding: 5px 12px; font-size: 12px; border-radius: 7px; }
+
+/* ==========================================================================
+   Grids
+   ========================================================================== */
+.row { display: flex; gap: 16px; flex-wrap: wrap; }
+.row > * { flex: 1; min-width: 210px; }
+.grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   Stage pipeline
+   ========================================================================== */
+.stages { display: flex; flex-direction: column; gap: 3px; }
+
+.stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 9px 12px 9px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  transition: background 0.16s var(--ease);
+}
+.stage:hover { background: var(--surface-2); }
+
+/* Connector rail threading the stages together. */
+.stage::before {
+  content: "";
+  position: absolute;
+  left: 15.5px;
+  top: 50%;
+  bottom: -3px;
+  width: 1px;
+  background: var(--border);
+}
+.stage:last-child::before { display: none; }
+
+.stage .dot {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  width: 11px; height: 11px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 2px solid var(--border-bright);
+  box-shadow: 0 0 0 4px var(--bg-elev);
+}
+.stage.completed .dot { background: var(--ok); border-color: var(--ok); }
+.stage.reused .dot { background: var(--cyan); border-color: var(--cyan); }
+.stage.failed .dot, .stage.interrupted .dot { background: var(--err); border-color: var(--err); }
+.stage.awaiting_input .dot { background: var(--warn); border-color: var(--warn); }
+.stage.running .dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  animation: throb 1.3s var(--ease) infinite;
+}
+@keyframes throb {
+  0%, 100% { box-shadow: 0 0 0 4px var(--bg-elev), 0 0 0 5px rgba(255, 107, 53, 0.5); }
+  50% { box-shadow: 0 0 0 4px var(--bg-elev), 0 0 0 10px rgba(255, 107, 53, 0); }
+}
+
+.stage .name { flex: 1; font-weight: 500; }
+.stage.completed .name, .stage.reused .name { color: var(--text-dim); }
+.stage .meta { color: var(--text-faint); font-size: 12px; font-variant-numeric: tabular-nums; }
+
+/* Running stages get a slow sheen so progress is visible without a spinner. */
+.stage.running {
+  background: linear-gradient(90deg, rgba(255, 107, 53, 0.09), transparent 70%);
+  background-size: 200% 100%;
+  animation: sweep 2.4s linear infinite;
+}
+@keyframes sweep {
+  from { background-position: 200% 0; }
+  to { background-position: -60% 0; }
+}
+
+.parallel-tag {
+  margin-left: 9px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--violet);
+  background: rgba(139, 124, 246, 0.13);
+  border: 1px solid rgba(139, 124, 246, 0.28);
+}
+
+/* ==========================================================================
+   Message boxes
+   ========================================================================== */
+.error-box, .warn-box, .info-box {
+  position: relative;
+  margin: 12px 0;
+  padding: 13px 15px 13px 17px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  border: 1px solid;
+  overflow: hidden;
+}
+.error-box::before, .warn-box::before, .info-box::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.error-box { background: rgba(244, 80, 106, 0.07); border-color: rgba(244, 80, 106, 0.32); }
+.error-box::before { background: var(--err); }
+.warn-box { background: rgba(245, 165, 36, 0.07); border-color: rgba(245, 165, 36, 0.32); }
+.warn-box::before { background: var(--warn); }
+.info-box { background: rgba(61, 219, 217, 0.06); border-color: rgba(61, 219, 217, 0.28); }
+.info-box::before { background: var(--cyan); }
+
+/* ==========================================================================
+   Agent trace
+   ========================================================================== */
+.trace-step {
+  position: relative;
+  margin-left: 6px;
+  padding: 0 0 18px 20px;
+  border-left: 1px solid var(--border);
+}
+.trace-step:last-child { padding-bottom: 0; border-color: transparent; }
+.trace-step::before {
+  content: "";
+  position: absolute;
+  left: -4.5px; top: 6px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--violet);
+  box-shadow: 0 0 0 3px var(--bg-elev), 0 0 10px rgba(139, 124, 246, 0.6);
+}
+
+.turn-label {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--violet);
+  background: rgba(139, 124, 246, 0.12);
+}
+.decision { margin-bottom: 9px; font-size: 13.5px; line-height: 1.6; }
+
+.toolcall {
+  margin-bottom: 6px;
+  padding: 10px 13px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+  transition: border-color 0.16s var(--ease);
+}
+.toolcall:hover { border-color: var(--border-bright); }
+.toolcall .tool-name {
+  font-family: var(--mono);
+  font-weight: 700;
+  color: var(--accent-soft);
+}
+.toolcall .args {
+  font-family: var(--mono);
+  color: var(--text-dim);
+  word-break: break-all;
+}
+
+/* ==========================================================================
+   Sources
+   ========================================================================== */
+.source-card {
+  margin-bottom: 11px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  transition: border-color 0.16s var(--ease), transform 0.16s var(--ease);
+}
+.source-card:hover { border-color: var(--border-bright); transform: translateX(2px); }
+.source-card.flagged { border-color: rgba(245, 165, 36, 0.35); }
+
+.source-card .src-title { font-size: 14px; font-weight: 600; }
+.source-card .src-id {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--cyan);
+  margin-right: 7px;
+}
+.source-card .src-excerpt {
+  margin-top: 9px;
+  padding-left: 12px;
+  border-left: 2px solid var(--border-bright);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   Angle cards
+   ========================================================================== */
+.angle-card {
+  position: relative;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--surface) 0%, var(--bg-elev) 100%);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s var(--ease), transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
+}
+.angle-card:hover {
+  border-color: var(--border-bright);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+.angle-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 16px 44px -16px rgba(255, 107, 53, 0.5);
+}
+.angle-card.selected::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(28rem 14rem at 50% -20%, rgba(255, 107, 53, 0.12), transparent 70%);
+}
+.angle-card.locked { cursor: default; }
+.angle-card.locked:hover { transform: none; }
+
+.angle-card .hook {
+  margin: 12px 0 4px;
+  font-size: 19px;
+  font-weight: 640;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.angle-field { margin-top: 14px; }
+.angle-field .label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.angle-field .label::before {
+  content: "";
+  width: 7px; height: 7px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.angle-field.sourced .label { color: var(--ok); }
+.angle-field.interpreted .label { color: var(--violet); }
+.angle-field p { margin: 5px 0 0; font-size: 13px; line-height: 1.6; color: var(--text); }
+
+.cite { margin-top: 5px; font-size: 11px; color: var(--text-faint); }
+.cite a {
+  font-family: var(--mono);
+  padding: 1px 5px;
+  margin-right: 4px;
+  border-radius: 4px;
+  background: rgba(61, 219, 217, 0.1);
+  color: var(--cyan);
+}
+
+.legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; color: var(--text-dim); }
+.legend i {
+  width: 9px; height: 9px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Assets
+   ========================================================================== */
+.asset-preview {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+/* Vertical assets get a device-ish frame so 9:16 reads as a placement. */
+.asset-frame {
+  position: relative;
+  margin: 0 auto;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+.asset-frame.vertical { max-width: 300px; border-radius: 22px; }
+.asset-frame.vertical .asset-preview { border-radius: 22px; }
+
+.asset-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 13px;
+  font-size: 11.5px;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+.asset-meta span {
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+th, td { padding: 9px 11px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text-faint); font-size: 11.5px; font-weight: 650; letter-spacing: 0.04em; }
+tr:last-child th, tr:last-child td { border-bottom: none; }
+tbody tr { transition: background 0.14s var(--ease); }
+tbody tr:hover { background: var(--surface-2); }
+
+/* ==========================================================================
+   Disclosure + code
+   ========================================================================== */
+details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 12px;
+  background: var(--bg);
+}
+details[open] { background: var(--bg-elev); }
+summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--text-dim);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::before {
+  content: "›";
+  font-size: 17px;
+  line-height: 1;
+  color: var(--text-faint);
+  transition: transform 0.2s var(--ease);
+}
+details[open] > summary::before { transform: rotate(90deg); }
+summary:hover { color: var(--text); }
+
+pre {
+  margin: 10px 0 0;
+  padding: 13px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* ==========================================================================
+   Loading skeletons
+   ========================================================================== */
+.skeleton {
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-3) 37%, var(--surface) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+@keyframes shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+.skeleton-line { height: 13px; margin-bottom: 10px; }
+
+/* Respect a user's motion preference rather than overriding it. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

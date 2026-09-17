@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/api.ts","./src/main.tsx","./src/types.ts","./src/components/assetpanel.tsx","./src/components/researchreview.tsx","./src/components/stagetimeline.tsx","./src/pages/campaignview.tsx","./src/pages/history.tsx","./src/pages/newcampaign.tsx"],"version":"5.9.3"}

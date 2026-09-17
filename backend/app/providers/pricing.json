@@ -1,0 +1,32 @@
+{
+  "_comment": [
+    "ESTIMATE ONLY. Rates are USD per 1,000,000 tokens and are read at runtime,",
+    "so a reviewer can correct them without touching code. Image generation on",
+    "the gpt-image-2.x family is billed per token, not per image, so any",
+    "'cost per image' figure is derived and approximate -- the ledger labels every",
+    "row it produces with is_estimate = true.",
+    "Tavily is billed in credits against a plan, not in dollars, so it is counted",
+    "in credits and deliberately left without a USD figure.",
+    "Source: published Azure OpenAI / OpenAI rate cards, September 2026."
+  ],
+  "currency": "USD",
+  "per_million_tokens": {
+    "gpt-image-2.5-sunburst": { "text_input": 5.0, "image_input": 8.0, "image_output": 30.0 },
+    "gpt-image-2.5-flare":    { "text_input": 5.0, "image_input": 8.0, "image_output": 30.0 },
+    "gpt-image-2":            { "text_input": 5.0, "image_input": 8.0, "image_output": 30.0 },
+    "gpt-image-1":            { "text_input": 5.0, "image_input": 10.0, "image_output": 40.0 },
+    "gpt-image-1.5":          { "text_input": 5.0, "image_input": 10.0, "image_output": 40.0 },
+    "gpt-image-1-mini":       { "text_input": 2.0, "image_input": 2.5, "image_output": 8.0 },
+    "default_chat":           { "text_input": 2.5, "text_output": 10.0 }
+  },
+  "chat_overrides": {
+    "gpt-4.1":      { "text_input": 2.0,  "text_output": 8.0 },
+    "gpt-4.1-mini": { "text_input": 0.4,  "text_output": 1.6 },
+    "gpt-4o":       { "text_input": 2.5,  "text_output": 10.0 },
+    "gpt-4o-mini":  { "text_input": 0.15, "text_output": 0.6 }
+  },
+  "search_credits": {
+    "_comment": "Tavily: basic search = 1 credit, advanced = 2, extract = 1.",
+    "free_tier_monthly": 1000
+  }
+}
