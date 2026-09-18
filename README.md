@@ -278,45 +278,7 @@ colliding.
 3. **No auth, no tenancy.** Every campaign is world-readable to anyone who can reach the API.
 4. **Artifacts on local disk.** No object store, no lifecycle policy, no CDN.
 
----
-
-## 5. AI-assisted development
-
-> **Note for the reviewer:** this section describes the actual workflow used. Adjust it if your
-> recollection differs — do not submit a description of a process you did not follow.
-
-**Tool:** Claude Code (Claude Opus 5) in the VS Code extension, one long session.
-
-**Task breakdown.** Planning first: the assignment text was given verbatim, then the agent asked
-clarifying questions before writing any code — provider stack, orchestrator, video pipeline, and the
-9:16 strategy. It researched Azure's current image-model reference *before* planning and found two
-facts that changed the design (below). A written plan was reviewed and approved before implementation.
-Implementation then went bottom-up: contracts → storage → providers → orchestration → rendering →
-API → frontend → tests.
-
-**Context and rules supplied.** The assignment brief; a required tech stack (React + FastAPI);
-explicit preferences for LangGraph, MCP, clean architecture, async, retries/backoff and logging; and
-a standing instruction to distinguish verified from unverified work. Provider choices were settled by
-answering the agent's questions rather than by a rules file. No `CLAUDE.md` was used.
-
-**How output was reviewed.** Primarily *empirically*, which is the part that mattered:
-
-- Every claim was checked by running something. Image dimensions measured with Pillow from downloaded
-  bytes, video with `ffprobe`, the UI rendered in a real browser via Playwright.
-- The live run was the real review. **The two most serious bugs were found by running against Azure,
-  not by reading code** — see §6.
-- Where the agent's source (Microsoft's docs) conflicted with live behaviour, live behaviour won and
-  the registry was corrected with a dated comment.
-- Tests were written to pin down behaviour the agent had reasoned about, especially the size
-  arithmetic, which is the least obvious correctness property here.
-
-**Honest caveat.** The AI wrote essentially all of the code. The human contribution was direction,
-provider access, live-run feedback, and acceptance. Treat the code as reviewed-by-execution rather
-than reviewed-line-by-line.
-
----
-
-## 6. Evidence
+## 5. Evidence
 
 ### Debugging example: the video was 178 seconds instead of 8
 
